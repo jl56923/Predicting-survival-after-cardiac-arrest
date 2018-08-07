@@ -1,0 +1,81 @@
+<html>
+
+<body>
+  <h1>This is our survival after cardiac arrest predictor.</h1>
+
+<div>
+  <h2>Gender</h2>
+    <select>
+      <option value="sex_code_M">Male</option>
+      <option value="sex_code_F">Female</option>
+    </select>
+  <h2>Age</h2>
+    <select>
+    </select>
+
+  <h2>Race</h2>
+  <select>
+  </select>
+  <h2>Ethnicity</h2>
+  <select>
+  </select>
+  <h2>Region</h2>
+  <select>
+  </select>
+  <h2>Source of payment</h2>
+  <select>
+  </select>
+</div>
+
+<div>
+  <button id="submit">Make prediction</button>
+</div>
+
+Our prediction is:
+<table>
+  <tr>
+    <td>
+      You will
+    </td>
+    <td id="hard_predict">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Probability
+    </td>
+    <td id="soft_predict">
+    </td>
+  </tr>
+</table>
+
+</body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+function send_features() {
+  let features = {
+    'sex_code': $('select').val(),
+  }
+  console.log(features);
+
+  $.ajax({
+    type: "POST",
+    contentType: "application/json; charset=utf-8",
+    url: "/predict",  // Replace with URL of POST handler
+    dataType: "json",
+    async: true,
+    data: JSON.stringify(features),
+    success: (result) => { /* AJAX has it built-in to recognize certain http statuses as success or failure */
+      $('#hard_predict').html(result['prediction'] ? 'survive' : 'not survive')
+      $('#soft_predict').html(result['prob_survived'])
+    },
+    error: (result) => {
+      alert('Error')
+    }
+  })
+}
+
+$('#submit').click( () => { send_features(); });
+
+</script>
+</html>
