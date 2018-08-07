@@ -5,25 +5,74 @@
 
 <div>
   <h2>Gender</h2>
-    <select>
+    <select id='sex_code'>
       <option value="sex_code_M">Male</option>
       <option value="sex_code_F">Female</option>
     </select>
+
   <h2>Age</h2>
-    <select>
+    <select id='pat_age'>
+      <option value="0">1-28 days</option>
+      <option value="1">29-365 days</option>
+      <option value="2">1-4 years</option>
+      <option value="3">5-9 years</option>
+      <option value="4">10-14 years</option>
+      <option value="5">15-17 years</option>
+      <option value="6">18-19 years</option>
+      <option value="7">20-24 years</option>
+      <option value="8">25-29 years</option>
+      <option value="9">30-34 years</option>
+      <option value="10">35-39 years</option>
+      <option value="11">40-44 years</option>
+      <option value="12">45-49 years</option>
+      <option value="13">50-54 years</option>
+      <option value="14" selected="selected">55-59 years</option>
+      <option value="15">60-64 years</option>
+      <option value="16">65-69 years</option>
+      <option value="17">70-74 years</option>
+      <option value="18">75-79 years</option>
+      <option value="19">80-84 years</option>
+      <option value="20">85-89 years</option>
+      <option value="21">90+ years</option>
     </select>
 
   <h2>Race</h2>
-  <select>
+  <select id='race'>
+    <option value="race_1">American Indian/Eskimo/Aleut</option>
+    <option value="race_2">Asian or Pacific Islander</option>
+    <option value="race_3">Black</option>
+    <option value="race_4" selected="selected">White</option>
+    <option value="race_5">Other</option>
   </select>
+
   <h2>Ethnicity</h2>
-  <select>
+  <select id='ethnicity'>
+    <option value="ethnicity_1">Hispanic</option>
+    <option value="ethnicity_2" selected="selected">Not Hispanic</option>
   </select>
+
   <h2>Region</h2>
-  <select>
+  <select id='public_health_region'>
+    <option value="public_health_region_01">Region 1</option>
+    <option value="public_health_region_02">Region 2</option>
+    <option value="public_health_region_03">Region 3</option>
+    <option value="public_health_region_04">Region 4</option>
+    <option value="public_health_region_05">Region 5</option>
+    <option value="public_health_region_06" selected="selected">Region 6</option>
+    <option value="public_health_region_07">Region 7</option>
+    <option value="public_health_region_08">Region 8</option>
+    <option value="public_health_region_09">Region 9</option>
+    <option value="public_health_region_10">Region 10</option>
+    <option value="public_health_region_11">Region 11</option>
   </select>
+
   <h2>Source of payment</h2>
-  <select>
+  <select id="first_payment_src">
+    <option value="first_payment_src_MA" selected="selected">Medicare</option>
+    <option value="first_payment_src_09">Self pay</option>
+    <option value="first_payment_src_MC">Medicaid</option>
+    <option value="first_payment_src_16">HMO</option>
+    <option value="first_payment_src_12">PPO</option>
   </select>
 </div>
 
@@ -54,7 +103,12 @@ Our prediction is:
 <script>
 function send_features() {
   let features = {
-    'sex_code': $('select').val(),
+    'sex_code': $('#sex_code').val(),
+    'pat_age': $('#pat_age').val(),
+    'race': $('#race').val(),
+    'ethnicity': $('#ethnicity').val(),
+    'public_health_region': $('#public_health_region').val(),
+    'first_payment_src': $('#first_payment_src').val()
   }
   console.log(features);
 

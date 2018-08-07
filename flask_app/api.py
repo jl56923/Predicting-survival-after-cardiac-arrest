@@ -21,7 +21,7 @@ prediction_defaults = {
     'type_of_admission': 'type_of_admission_1',
     'source_of_admission': 'source_of_admission_1',
     'admit_weekday': 1,
-    'length_of_stay': 0, # patient age was scaled so that it has a mean of 0. Median is 0.17
+    'length_of_stay': -0.57, # patient age was scaled so that it has a mean of 0. Median is 0.17
     'hospital': 'hospital_community'
 }
 
@@ -31,11 +31,15 @@ def make_prediction(features):
 
     feature_dict = prediction_defaults.copy()
 
+    print(features)
+
     for key, value in features.items():
         if key == 'length_of_stay':
-            feature_dict[key] = ssX_los.transform(np.asarray([value]).reshape(-1,1))[0,0]
+            feature_dict[key] = ssX_los.transform(np.asarray([float(value)]).reshape(-1,1))[0,0]
         elif key == 'pat_age':
-            feature_dict[key] == ssX_age.transform(np.asarray([value]).reshape(-1,1))[0,0]
+            feature_dict[key] = ssX_age.transform(np.asarray([float(value)]).reshape(-1,1))[0,0]
+            print("This is the transformed age:")
+            print(ssX_age.transform(np.asarray([float(value)]).reshape(-1,1))[0,0])
         else:
             feature_dict[key] = value
 
@@ -51,6 +55,8 @@ def make_prediction(features):
             new_prediction[key] = value
         else:
              new_prediction[value] = 1
+
+    #print(new_prediction)
 
     X = np.asarray(new_prediction).reshape(1,-1)
     print(gbc_model.predict(X))
