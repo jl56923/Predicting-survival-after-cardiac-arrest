@@ -33,11 +33,13 @@ def make_prediction(features):
 
     for key, value in features.items():
         if key == 'length_of_stay':
-            feature_dict[key] = ssX_los.transform(np.asarray([value]).reshape(-1,1))
+            feature_dict[key] = ssX_los.transform(np.asarray([value]).reshape(-1,1))[0,0]
         elif key == 'pat_age':
-            feature_dict[key] == ssX_age.transform(np.asarray([value]).reshape(-1,1))
+            feature_dict[key] == ssX_age.transform(np.asarray([value]).reshape(-1,1))[0,0]
         else:
             feature_dict[key] = value
+
+    print(feature_dict)
 
     new_prediction = prediction_vector.copy()
 
@@ -45,9 +47,9 @@ def make_prediction(features):
     # whatever feature it is that the user changed gets updated in the prediction vector.
     # Otherwise, keep all of the defaults that prediction_vector was initialized with.
     for key, value in feature_dict.items():
-         if key == 'pat_age' or key =='hiv_drug' or key == 'admit_weekday' or key == 'length_of_stay':
-             new_prediction[key] = value
-         else:
+        if key == 'pat_age' or key =='hiv_drug' or key == 'admit_weekday' or key == 'length_of_stay':
+            new_prediction[key] = value
+        else:
              new_prediction[value] = 1
 
     X = np.asarray(new_prediction).reshape(1,-1)
