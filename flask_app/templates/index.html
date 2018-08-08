@@ -1,9 +1,15 @@
 <html>
-
+<head>
+  <!-- specifically for fancy sliders, like fare -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/bootstrap-slider.min.js"></script>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/css/bootstrap-slider.min.css'/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
 <body>
   <h1>This is our survival after cardiac arrest predictor.</h1>
 
-<div>
+<div id="demographic_predictors">
+  <h1>Demographic predictors</h1>
   <h2>Gender</h2>
     <select id='sex_code'>
       <option value="sex_code_M">Male</option>
@@ -76,9 +82,78 @@
   </select>
 </div>
 
+<div id="hospital_stay_predictors">
+  <h1>Hospital predictors</h1>
+
+  <h2>Type of admission</h2>
+  <select id="type_of_admission">
+    <option value="type_of_admission_1" selected="selected">Emergent</option>
+    <option value="type_of_admission_2">Urgent</option>
+    <option value="type_of_admission_3">Elective</option>
+  </select>
+
+  <h2>Source of Admission</h2>
+  <select id="source_of_admission">
+    <option value="source_of_admission_1" selected="selected">Home</option>
+    <option value="source_of_admission_4">Transferred from another hospital</option>
+    <option value="source_of_admission_2">Referred from clinic</option>
+  </select>
+
+  <h2>Length of stay</h2>
+  <div class="form-group">
+    <div class="col-xs-3">
+        <h4><span class=" label label-primary">Length of stay</span></h4>
+    </div>
+    <div class="col-xs-2">
+        <input type="range" id="length_of_stay" min="1" max="30" step="1" value="1"/>
+        <span>
+          Length of stay set to <span id='read_los'>1</span>
+        </span>
+      </div>
+  </div>
+
+  <h2>Hospital type</h2>
+  <select id="hospital">
+    <option value="hospital_community" selected="selected">Community hospital</option>
+    <option value="hospital_teaching">Teaching hospital</option>
+    <option value="hospital_CAH">Rural hospital</option>
+  </select>
+
+</div>
+<h2>Hospital diagnoses</h2>
+<ul>
+  <li><input type="checkbox" class="dx" id="cb1" value="('51881', 'N')"/>
+    <label for="cb1"><img src="{{url_for('static', filename='lungs.png')}}" /></label>
+    <span>Acute respiratory failure</span>
+  </li>
+  <li><input type="checkbox" class="dx" id="cb2" value="('5849', 'N')" />
+    <label for="cb2"><img src="{{url_for('static', filename='acute_kidney.png')}}" /></label>
+    <span>Acute kidney injury</span>
+  </li>
+  <li><input type="checkbox" class="dx" id="cb3" value="('3481', 'N')" />
+    <label for="cb3"><img src="{{url_for('static', filename='brain.png')}}" /></label>
+    <span>Anoxic brain injury</span>
+  </li>
+  <br />
+  <li><input type="checkbox" class="dx" id="cb4" value="('41401', 'Y')"/>
+    <label for="cb4"><img src="{{url_for('static', filename='broken_heart.png')}}" /></label>
+    <span>Coronary artery disease</span>
+  </li>
+  <li><input type="checkbox" class="dx" id="cb5" value="('5856', 'Y')"/>
+    <label for="cb5"><img src="{{url_for('static', filename='ESRD.png')}}" /></label>
+    <span>End stage renal disease</span>
+  </li>
+  <li><input type="checkbox" class="dx" id="cb6" value="('25000', 'Y')"/>
+    <label for="cb6"><img src="{{url_for('static', filename='diabetes.png')}}" /></label>
+    <span>Diabetes</span>
+  </li>
+</ul>
+
+<br />
 <div>
   <button id="submit">Make prediction</button>
 </div>
+<br />
 
 Our prediction is:
 <table>
@@ -104,13 +179,22 @@ Our prediction is:
 function send_features() {
   let features = {
     'sex_code': $('#sex_code').val(),
-    'pat_age': $('#pat_age').val(),
+    'pat_age': +$('#pat_age').val(),
     'race': $('#race').val(),
     'ethnicity': $('#ethnicity').val(),
     'public_health_region': $('#public_health_region').val(),
-    'first_payment_src': $('#first_payment_src').val()
+    'first_payment_src': $('#first_payment_src').val(),
+    'type_of_admission': $('#type_of_admission').val(),
+    'source_of_admission': $('#source_of_admission').val(),
+    'length_of_stay': +$('#length_of_stay').val(),
+    'hospital': $("#hospital").val()
   }
-  console.log(features);
+
+  let dx_dict = {}
+  let i = 0;
+  $('.dx:checkbox:checked').each(function () {
+       features['dx'+String(i++)] = $(this).val()
+  });
 
   $.ajax({
     type: "POST",
@@ -127,9 +211,14 @@ function send_features() {
       alert('Error')
     }
   })
+
 }
 
 $('#submit').click( () => { send_features(); });
+
+$('#length_of_stay').change( () => {
+    $('#read_los').html($('#length_of_stay').val());
+  });
 
 </script>
 </html>

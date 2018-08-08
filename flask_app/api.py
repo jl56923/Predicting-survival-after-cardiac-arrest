@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 import pickle
+from ast import literal_eval as make_tuple
+import re
 
 gbc_model = pickle.load(open('./model/gbc_model.pkl', 'rb'))
 prediction_vector = pickle.load(open('./data/prediction_vector.pkl', 'rb'))
@@ -31,22 +33,21 @@ def make_prediction(features):
 
     feature_dict = prediction_defaults.copy()
 
-    print(features)
+    #print(features)
 
     for key, value in features.items():
         if key == 'length_of_stay':
             feature_dict[key] = ssX_los.transform(np.asarray([float(value)]).reshape(-1,1))[0,0]
         elif key == 'pat_age':
             feature_dict[key] = ssX_age.transform(np.asarray([float(value)]).reshape(-1,1))[0,0]
-            print("This is the transformed age:")
-            print(ssX_age.transform(np.asarray([float(value)]).reshape(-1,1))[0,0])
         else:
+            if "(" in value:
+                value = make_tuple(value)
             feature_dict[key] = value
 
     print(feature_dict)
 
     new_prediction = prediction_vector.copy()
-
     # Every time make_prediction is called, we go ahead and update prediction_vector so that
     # whatever feature it is that the user changed gets updated in the prediction vector.
     # Otherwise, keep all of the defaults that prediction_vector was initialized with.
@@ -57,8 +58,10 @@ def make_prediction(features):
              new_prediction[value] = 1
 
     #print(new_prediction)
+    #print(new_prediction[('5849', 'N')])
 
     X = np.asarray(new_prediction).reshape(1,-1)
+    #X = np.asarray(prediction_vector).reshape(1,-1)
     print(gbc_model.predict(X))
     print(gbc_model.predict_proba(X))
     prob_survived = gbc_model.predict_proba(X)[0, 0]
