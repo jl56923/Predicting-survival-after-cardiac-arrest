@@ -70,6 +70,9 @@ def make_prediction(features):
         'prediction': int(prob_survived > 0.5),
         'prob_survived': prob_survived
     }
+
+    print(result)
+    
     return result
 
 if __name__ == '__main__':

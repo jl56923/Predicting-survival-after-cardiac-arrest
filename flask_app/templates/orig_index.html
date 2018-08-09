@@ -1,0 +1,491 @@
+<html>
+<head>
+
+  <script src="https://code.jquery.com/jquery-latest.js"></script>
+  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <script src="/static/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <!-- specifically for fancy sliders, like fare -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/bootstrap-slider.min.js"></script>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/css/bootstrap-slider.min.css'/>
+
+</head>
+<body>
+  <script src="https://code.jquery.com/jquery-latest.js"></script>
+  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <script src="/static/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <!-- specifically for fancy sliders, like fare -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/bootstrap-slider.min.js"></script>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/css/bootstrap-slider.min.css'/>
+
+  <div class="container">
+    <div class="jumbotron text-center" style="margin-bottom:0">
+        <h1>That Sinking Feeling</h1>
+        <p>Because sometimes, ice is not nice</p>
+    </div>
+  </div>
+
+<div id="demographic_predictors">
+  <h1>Demographic predictors</h1>
+  <h2>Gender</h2>
+    <select id='sex_code'>
+      <option value="sex_code_M">Male</option>
+      <option value="sex_code_F">Female</option>
+    </select>
+
+  <h2>Age</h2>
+    <select id='pat_age'>
+      <option value="0">1-28 days</option>
+      <option value="1">29-365 days</option>
+      <option value="2">1-4 years</option>
+      <option value="3">5-9 years</option>
+      <option value="4">10-14 years</option>
+      <option value="5">15-17 years</option>
+      <option value="6">18-19 years</option>
+      <option value="7">20-24 years</option>
+      <option value="8">25-29 years</option>
+      <option value="9">30-34 years</option>
+      <option value="10">35-39 years</option>
+      <option value="11">40-44 years</option>
+      <option value="12">45-49 years</option>
+      <option value="13">50-54 years</option>
+      <option value="14" selected="selected">55-59 years</option>
+      <option value="15">60-64 years</option>
+      <option value="16">65-69 years</option>
+      <option value="17">70-74 years</option>
+      <option value="18">75-79 years</option>
+      <option value="19">80-84 years</option>
+      <option value="20">85-89 years</option>
+      <option value="21">90+ years</option>
+    </select>
+
+  <h2>Race</h2>
+  <select id='race'>
+    <option value="race_1">American Indian/Eskimo/Aleut</option>
+    <option value="race_2">Asian or Pacific Islander</option>
+    <option value="race_3">Black</option>
+    <option value="race_4" selected="selected">White</option>
+    <option value="race_5">Other</option>
+  </select>
+
+  <h2>Ethnicity</h2>
+  <select id='ethnicity'>
+    <option value="ethnicity_1">Hispanic</option>
+    <option value="ethnicity_2" selected="selected">Not Hispanic</option>
+  </select>
+
+  <h2>Region</h2>
+  <select id='public_health_region'>
+    <option value="public_health_region_01">Region 1</option>
+    <option value="public_health_region_02">Region 2</option>
+    <option value="public_health_region_03">Region 3</option>
+    <option value="public_health_region_04">Region 4</option>
+    <option value="public_health_region_05">Region 5</option>
+    <option value="public_health_region_06" selected="selected">Region 6</option>
+    <option value="public_health_region_07">Region 7</option>
+    <option value="public_health_region_08">Region 8</option>
+    <option value="public_health_region_09">Region 9</option>
+    <option value="public_health_region_10">Region 10</option>
+    <option value="public_health_region_11">Region 11</option>
+  </select>
+
+  <h2>Source of payment</h2>
+  <select id="first_payment_src">
+    <option value="first_payment_src_MA" selected="selected">Medicare</option>
+    <option value="first_payment_src_09">Self pay</option>
+    <option value="first_payment_src_MC">Medicaid</option>
+    <option value="first_payment_src_16">HMO</option>
+    <option value="first_payment_src_12">PPO</option>
+  </select>
+</div>
+
+<div id="hospital_stay_predictors">
+  <h1>Hospital predictors</h1>
+
+  <h2>Type of admission</h2>
+  <select id="type_of_admission">
+    <option value="type_of_admission_1" selected="selected">Emergent</option>
+    <option value="type_of_admission_2">Urgent</option>
+    <option value="type_of_admission_3">Elective</option>
+  </select>
+
+  <h2>Source of Admission</h2>
+  <select id="source_of_admission">
+    <option value="source_of_admission_1" selected="selected">Home</option>
+    <option value="source_of_admission_4">Transferred from another hospital</option>
+    <option value="source_of_admission_2">Referred from clinic</option>
+  </select>
+
+  <h2>Length of stay</h2>
+  <div class="form-group">
+    <div class="col-xs-3">
+        <h4><span class=" label label-primary">Length of stay</span></h4>
+    </div>
+    <div class="col-xs-2">
+        <input type="range" id="length_of_stay" min="1" max="30" step="1" value="1"/>
+        <span>
+          Length of stay set to <span id='read_los'>1</span>
+        </span>
+      </div>
+  </div>
+
+  <h2>Hospital type</h2>
+  <select id="hospital">
+    <option value="hospital_community" selected="selected">Community hospital</option>
+    <option value="hospital_teaching">Teaching hospital</option>
+    <option value="hospital_CAH">Rural hospital</option>
+  </select>
+
+</div>
+<h2>Hospital diagnoses</h2>
+<ul>
+  <li><input type="checkbox" class="dx" id="cb1" value="('51881', 'N')"/>
+    <label for="cb1"><img src="{{url_for('static', filename='lungs.png')}}" /></label>
+    <span>Acute respiratory failure</span>
+  </li>
+  <li><input type="checkbox" class="dx" id="cb2" value="('5849', 'N')" />
+    <label for="cb2"><img src="{{url_for('static', filename='acute_kidney.png')}}" /></label>
+    <span>Acute kidney injury</span>
+  </li>
+  <li><input type="checkbox" class="dx" id="cb3" value="('3481', 'N')" />
+    <label for="cb3"><img src="{{url_for('static', filename='brain.png')}}" /></label>
+    <span>Anoxic brain injury</span>
+  </li>
+  <br />
+  <li><input type="checkbox" class="dx" id="cb4" value="('41401', 'Y')"/>
+    <label for="cb4"><img src="{{url_for('static', filename='broken_heart.png')}}" /></label>
+    <span>Coronary artery disease</span>
+  </li>
+  <li><input type="checkbox" class="dx" id="cb5" value="('5856', 'Y')"/>
+    <label for="cb5"><img src="{{url_for('static', filename='ESRD.png')}}" /></label>
+    <span>End stage renal disease</span>
+  </li>
+  <li><input type="checkbox" class="dx" id="cb6" value="('25000', 'Y')"/>
+    <label for="cb6"><img src="{{url_for('static', filename='diabetes.png')}}" /></label>
+    <span>Diabetes</span>
+  </li>
+</ul>
+
+<br />
+<div>
+  <button id="submit">Make prediction</button>
+</div>
+<br />
+
+Our prediction is:
+<table>
+  <tr>
+    <td>
+      You will
+    </td>
+    <td id="hard_predict">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Probability
+    </td>
+    <td id="soft_predict">
+    </td>
+  </tr>
+</table>
+
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+    <!-- specifically for fancy sliders, like fare -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/bootstrap-slider.min.js"></script>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/css/bootstrap-slider.min.css'/>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<body>
+
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+    <!-- specifically for fancy sliders, like fare -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/bootstrap-slider.min.js"></script>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.2.0/css/bootstrap-slider.min.css'/>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<body>
+
+    <div class="jumbotron text-center" style="margin-bottom:0">
+      <h1>Survival after Cardiac Arrest</h1>
+      <p>Be still my heart... or not!</p>
+    </div>
+
+    <!-- Use navbar just as a visual divider -->
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    </nav>
+
+    <div class="container" style="margin-top:30px">
+      <div class="row">
+        <div class="col-sm-4">
+          <h2>Probability of survival</h2>
+          <hr class="d-sm-none">
+        </div>
+        <div class="col-sm-8">
+
+              <div class="form-group">
+                  <div class="col-xs-3">
+                      <label for="sex_code"><h4><span class=" label label-primary">Gender</span></h4></label>
+                  </div>
+                  <div class="col-xs-2">
+                      <select id='sex_code' class="form-control input-lg">
+                        <option value="sex_code_M">Male</option>
+                        <option value="sex_code_F">Female</option>
+                      </select>
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <div class="col-xs-3">
+                      <label for="pat_age"><h4><span class=" label label-primary">Age</span></h4></label>
+                  </div>
+                  <div class="col-xs-2">
+                    <select id='pat_age' class="form-control input-lg">
+                      <option value="0">1-28 days</option>
+                      <option value="1">29-365 days</option>
+                      <option value="2">1-4 years</option>
+                      <option value="3">5-9 years</option>
+                      <option value="4">10-14 years</option>
+                      <option value="5">15-17 years</option>
+                      <option value="6">18-19 years</option>
+                      <option value="7">20-24 years</option>
+                      <option value="8">25-29 years</option>
+                      <option value="9">30-34 years</option>
+                      <option value="10">35-39 years</option>
+                      <option value="11">40-44 years</option>
+                      <option value="12">45-49 years</option>
+                      <option value="13">50-54 years</option>
+                      <option value="14" selected="selected">55-59 years</option>
+                      <option value="15">60-64 years</option>
+                      <option value="16">65-69 years</option>
+                      <option value="17">70-74 years</option>
+                      <option value="18">75-79 years</option>
+                      <option value="19">80-84 years</option>
+                      <option value="20">85-89 years</option>
+                      <option value="21">90+ years</option>
+                    </select>
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <div class="col-xs-3">
+                      <label for="race"><h4><span class=" label label-primary">Race</span></h4></label>
+                  </div>
+                  <div class="col-xs-2">
+                    <select id='race'>
+                      <option value="race_1">American Indian/Eskimo/Aleut</option>
+                      <option value="race_2">Asian or Pacific Islander</option>
+                      <option value="race_3">Black</option>
+                      <option value="race_4" selected="selected">White</option>
+                      <option value="race_5">Other</option>
+                    </select>
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <div class="col-xs-3">
+                      <label for="ethnicity"><h4><span class=" label label-primary">Race</span></h4></label>
+                  </div>
+                  <div class="col-xs-2">
+                    <select id='ethnicity'>
+                      <option value="ethnicity_1">Hispanic</option>
+                      <option value="ethnicity_2" selected="selected">Not Hispanic</option>
+                    </select>
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <div class="col-xs-3">
+                      <label for="public_health_region"><h4><span class=" label label-primary">Region</span></h4></label>
+                  </div>
+                  <div class="col-xs-2">
+                    <select id='public_health_region'>
+                      <option value="public_health_region_01">Region 1</option>
+                      <option value="public_health_region_02">Region 2</option>
+                      <option value="public_health_region_03">Region 3</option>
+                      <option value="public_health_region_04">Region 4</option>
+                      <option value="public_health_region_05">Region 5</option>
+                      <option value="public_health_region_06" selected="selected">Region 6</option>
+                      <option value="public_health_region_07">Region 7</option>
+                      <option value="public_health_region_08">Region 8</option>
+                      <option value="public_health_region_09">Region 9</option>
+                      <option value="public_health_region_10">Region 10</option>
+                      <option value="public_health_region_11">Region 11</option>
+                    </select>
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <div class="col-xs-3">
+                      <label for="first_payment_src"><h4><span class=" label label-primary">Source of payment</span></h4></label>
+                  </div>
+                  <div class="col-xs-2">
+                    <select id="first_payment_src">
+                      <option value="first_payment_src_MA" selected="selected">Medicare</option>
+                      <option value="first_payment_src_09">Self pay</option>
+                      <option value="first_payment_src_MC">Medicaid</option>
+                      <option value="first_payment_src_16">HMO</option>
+                      <option value="first_payment_src_12">PPO</option>
+                    </select>
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <div class="col-xs-3">
+                      <label for="type_of_admission"><h4><span class=" label label-primary">Type of admission</span></h4></label>
+                  </div>
+                  <div class="col-xs-2">
+                    <select id="type_of_admission">
+                      <option value="type_of_admission_1" selected="selected">Emergent</option>
+                      <option value="type_of_admission_2">Urgent</option>
+                      <option value="type_of_admission_3">Elective</option>
+                    </select>
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <div class="col-xs-3">
+                      <label for="source_of_admission"><h4><span class=" label label-primary">Source of admission</span></h4></label>
+                  </div>
+                  <div class="col-xs-2">
+                      <select id="source_of_admission">
+                      <option value="source_of_admission_1" selected="selected">Home</option>
+                      <option value="source_of_admission_4">Transferred from another hospital</option>
+                      <option value="source_of_admission_2">Referred from clinic</option>
+                    </select>
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <div class="col-xs-3">
+                      <label for="length_of_stay"><h4><span class=" label label-primary">Length of stay</span></h4></label>
+                  </div>
+                  <div class="col-xs-2">
+                    <input type="range" id="length_of_stay" min="1" max="30" step="1" value="1"/>
+                      <span>
+                        Length of stay set to <span id='read_los'>1</span>
+                      </span>
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <div class="col-xs-3">
+                      <label for="hospital"><h4><span class=" label label-primary">Type of hospital</span></h4></label>
+                  </div>
+                  <div class="col-xs-2">
+                    <select id="hospital">
+                      <option value="hospital_community" selected="selected">Community hospital</option>
+                      <option value="hospital_teaching">Teaching hospital</option>
+                      <option value="hospital_CAH">Rural hospital</option>
+                    </select>
+                  </div>
+              </div>
+
+              <ul>
+                <li><input type="checkbox" class="dx" id="cb1" value="('51881', 'N')"/>
+                  <label for="cb1"><img src="{{url_for('static', filename='lungs.png')}}" /></label>
+                  <span>Acute respiratory failure</span>
+                </li>
+                <li><input type="checkbox" class="dx" id="cb2" value="('5849', 'N')" />
+                  <label for="cb2"><img src="{{url_for('static', filename='acute_kidney.png')}}" /></label>
+                  <span>Acute kidney injury</span>
+                </li>
+                <li><input type="checkbox" class="dx" id="cb3" value="('3481', 'N')" />
+                  <label for="cb3"><img src="{{url_for('static', filename='brain.png')}}" /></label>
+                  <span>Anoxic brain injury</span>
+                </li>
+                <br />
+                <li><input type="checkbox" class="dx" id="cb4" value="('41401', 'Y')"/>
+                  <label for="cb4"><img src="{{url_for('static', filename='broken_heart.png')}}" /></label>
+                  <span>Coronary artery disease</span>
+                </li>
+                <li><input type="checkbox" class="dx" id="cb5" value="('5856', 'Y')"/>
+                  <label for="cb5"><img src="{{url_for('static', filename='ESRD.png')}}" /></label>
+                  <span>End stage renal disease</span>
+                </li>
+                <li><input type="checkbox" class="dx" id="cb6" value="('25000', 'Y')"/>
+                  <label for="cb6"><img src="{{url_for('static', filename='diabetes.png')}}" /></label>
+                  <span>Diabetes</span>
+                </li>
+              </ul>
+
+              <div class="form-group">
+                <button id="submit">Make prediction</button>
+              </div>
+
+          </div>
+        </div>
+
+        <div class="form-group" style="display: none" id='the_result_div'>
+          <div class="col-xs-3">
+              <label for="class_type"><h4><span class=" label label-primary">Prediction</span></h4></label>
+          </div>
+          <div>
+            You <span id="hard_predict"></span> survive (survival probability is <b><span id="soft_predict"></span>%</b>).
+          </div>
+        </div>
+    </div>
+
+  </body>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+function send_features() {
+  let features = {
+    'sex_code': $('#sex_code').val(),
+    'pat_age': +$('#pat_age').val(),
+    'race': $('#race').val(),
+    'ethnicity': $('#ethnicity').val(),
+    'public_health_region': $('#public_health_region').val(),
+    'first_payment_src': $('#first_payment_src').val(),
+    'type_of_admission': $('#type_of_admission').val(),
+    'source_of_admission': $('#source_of_admission').val(),
+    'length_of_stay': +$('#length_of_stay').val(),
+    'hospital': $("#hospital").val()
+  }
+
+  let dx_dict = {}
+  let i = 0;
+  $('.dx:checkbox:checked').each(function () {
+       features['dx'+String(i++)] = $(this).val()
+  });
+
+  $.ajax({
+    type: "POST",
+    contentType: "application/json; charset=utf-8",
+    url: "/predict",  // Replace with URL of POST handler
+    dataType: "json",
+    async: true,
+    data: JSON.stringify(features),
+    success: (result) => { /* AJAX has it built-in to recognize certain http statuses as success or failure */
+      $('#hard_predict').html(result['prediction'] ? 'survive' : 'not survive')
+      $('#soft_predict').html(result['prob_survived'])
+    },
+    error: (result) => {
+      alert('Error')
+    }
+  })
+
+}
+
+$('#submit').click( () => { send_features(); });
+
+$('#length_of_stay').change( () => {
+    $('#read_los').html($('#length_of_stay').val());
+  });
+
+</script>
+</html>
