@@ -1,4 +1,4 @@
-# Project 3
+# Predicting survival after cardiac arrest
 
 ## Proposal
 The purpose of this project is to analyze Texas hospital discharge data from 2011 and to evaluate the subset of patients who have experienced cardiac arrest, and to build a binary classifier that predicts if a patient is alive or dead at the time of discharge, depending on their demographics and other associated diagnoses or procedure codes.
